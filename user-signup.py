@@ -61,16 +61,7 @@ class MainPage(webapp2.RequestHandler):
         self.response.write("Thanks for trying!")
 
 routes = [
-    ('/', MainPage), 
+    ('/', MainPage),
 ]
 
 app = webapp2.WSGIApplication(routes, debug=True)
-
-
-
-<html><head>
-    </head>
-    <body>
-    <h1>Signup</h1>
-    
-</body></html>
