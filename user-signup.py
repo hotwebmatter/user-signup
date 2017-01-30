@@ -32,7 +32,7 @@ def form_element(name, label, required, error):
     if name == 'username' and 'username' in error:
         result +=''' <span class="error">{0}</span>
                     '''.format(error)
-    if name == 'password' and 'password' in error:
+    if name == 'password' and 'valid' in error:
         result +=''' <span class="error">{0}</span>
                     '''.format(error)
     if name == 'verify' and 'match' in error:
@@ -136,6 +136,16 @@ class MainPage(webapp2.RequestHandler):
 
             # redirect to homepage, and include error as a query parameter in the URL
             self.redirect("/?error=" + error_escaped)
+
+        email = self.request.get("email")
+        if len(email) > 0 and not valid_email(email):
+            # make a helpful error message
+            error = "That's not a valid email address."
+            error_escaped = cgi.escape(error, quote=True)
+
+            # redirect to homepage, and include error as a query parameter in the URL
+            self.redirect("/?error=" + error_escaped)
+
 
         self.response.write("Welcome {0}!".format(username))
 
