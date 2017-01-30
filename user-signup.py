@@ -1,4 +1,17 @@
 import webapp2
+import re
+
+USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
+def valid_username(username):
+    return USER_RE.match(username)
+
+PW_RE = re.compile(r"^.{3,20}$")
+def valid_password(password):
+    return PW_RE.match(password)
+
+EMAIL_RE = re.compile(r"^[\S]+@[\S]+.[\S]+$")
+def valid_email(email):
+    return EMAIL_RE.match(email)
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
