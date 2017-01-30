@@ -71,35 +71,6 @@ class MainPage(webapp2.RequestHandler):
         form_body += form_element('password', 'Password', True, error_message)
         form_body += form_element('verify', 'Verify Pasword', True, error_message)
         form_body += form_element('email', 'Email', False, error_message)
-                #
-                # <tr>
-                #     <td><label for="username">Username</label></td>
-                #     <td>
-                #         <input name="username" type="text" value="" required="">
-                #         <span class="error"></span>
-                #     </td>
-                # </tr>
-                # <tr>
-                #     <td><label for="password">Password</label></td>
-                #     <td>
-                #         <input name="password" type="password" required="">
-                #         <span class="error"></span>
-                #     </td>
-                # </tr>
-                # <tr>
-                #     <td><label for="verify">Verify Password</label></td>
-                #     <td>
-                #         <input name="verify" type="password" required="">
-                #         <span class="error"></span>
-                #     </td>
-                # </tr>
-                # <tr>
-                #     <td><label for="email">Email (optional)</label></td>
-                #     <td>
-                #         <input name="email" type="email" value="">
-                #         <span class="error"></span>
-                #     </td>
-                # </tr>
         form_footer = """            </tbody></table>
             <input type="submit">
         </form>
