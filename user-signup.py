@@ -32,7 +32,7 @@ def form_element(name, label, required, error):
     if name == 'username' and 'username' in error:
         result +=''' <span class="error">{0}</span>
                     '''.format(error)
-    if name == 'password' and 'valid' in error:
+    if name == 'password' and 'That' in error:
         result +=''' <span class="error">{0}</span>
                     '''.format(error)
     if name == 'verify' and 'match' in error:
