@@ -34,7 +34,7 @@ class MainPage(webapp2.RequestHandler):
         username_error = ''
         if not valid_username(username):
             # make a helpful error message
-            username_error = "'{0}' is not a valid username.".format(username)
+            username_error = cgi.escape("'{0}' is not a valid username.".format(username), quote = True)
             errors = True
 
         password = self.request.get("password")
@@ -43,29 +43,35 @@ class MainPage(webapp2.RequestHandler):
         verify_error = ''
         if not valid_password(password):
             # make a helpful error message
-            password_error = "That's not a valid password."
+            password_error = cgi.escape("That's not a valid password.", quote = True)
             errors = True
 
         if password != verify:
             # make a helpful error message
-            verify_error = "Your passwords didn't match."
+            verify_error = cgi.escape("Your passwords didn't match.", quote = True)
             errors = True
 
         email = self.request.get("email")
         email_error = ''
         if len(email) > 0 and not valid_email(email):
             # make a helpful error message
-            email_error = "That's not a valid email address."
+            email_error = cgi.escape("That's not a valid email address.", quote = True)
             errors = True
 
         if errors:
             self.render_page(username, username_error, password_error, verify_error, email, email_error)
             # self.response.write(page)
         else:
-            self.response.write("Welcome {0}!".format(username))
+            self.redirect("/welcome?username={}".format(username))
+
+class WelcomePage(webapp2.RequestHandler):
+    def get(self):
+        username = self.request.get("username")
+        self.response.write("Welcome {0}!".format(username))
 
 routes = [
     ('/', MainPage),
+    ('/welcome', WelcomePage)
 ]
 
 app = webapp2.WSGIApplication(routes, debug=True)
