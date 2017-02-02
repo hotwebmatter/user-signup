@@ -2,6 +2,7 @@ import webapp2
 import cgi
 import re
 
+# Regular Expressions
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 def valid_username(username):
     return USER_RE.match(username)
@@ -13,6 +14,8 @@ def valid_password(password):
 EMAIL_RE = re.compile(r"^[\S]+@[\S]+.[\S]+$")
 def valid_email(email):
     return EMAIL_RE.match(email)
+
+# HTML Template
 
 def form_element(name, label, required, error):
     result = '''
@@ -43,10 +46,10 @@ def form_element(name, label, required, error):
 '''
     return result
 
-class MainPage(webapp2.RequestHandler):
-    def get(self):
-        error_message = self.request.get("error")
-        header = """<!DOCTYPE html>
+
+def render_page(error):
+    error_message = self.request.get("error")
+    header = """<!DOCTYPE html>
 <html>
   <head>
     <title>User Signup</title>
@@ -58,26 +61,30 @@ class MainPage(webapp2.RequestHandler):
   </head>
   <body>
 """
-        footer = """
+    footer = """
   </body>
 </html>"""
 
-        form_header = """    <h1>User Signup!</h1>
+    form_header = """    <h1>User Signup!</h1>
         <form method="post">
             <table>
                 <tbody>
 """
-        form_body = form_element('username', 'Username', True, error_message)
-        form_body += form_element('password', 'Password', True, error_message)
-        form_body += form_element('verify', 'Verify Pasword', True, error_message)
-        form_body += form_element('email', 'Email', False, error_message)
-        form_footer = """            </tbody></table>
+    form_body = form_element('username', 'Username', True, error_message)
+    form_body += form_element('password', 'Password', True, error_message)
+    form_body += form_element('verify', 'Verify Pasword', True, error_message)
+    form_body += form_element('email', 'Email', False, error_message)
+    form_footer = """            </tbody></table>
             <input type="submit">
         </form>
 
 """
-        form = form_header + form_body + form_footer
-        page = header + form + footer
+    form = form_header + form_body + form_footer
+    page = header + form + footer
+
+class MainPage(webapp2.RequestHandler):
+    def get(self):
+        page = render_page('')
         self.response.write(page)
 
     def post(self):
