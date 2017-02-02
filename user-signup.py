@@ -21,18 +21,23 @@ with open('user-signup.html', 'r') as template_file:
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
-        page = template % {'username': '', "username_error': '', 'password_error': '', 'verify_error': '', 'email': '', 'email_error': ''}
+        page = template % {'username': '', 'username_error': '', 'password_error': '', 'verify_error': '', 'email': '', 'email_error': ''}
         self.response.write(page)
 
     def post(self):
+        errors = False
+        
         username = self.request.get("username")
+        username_error = ''
         if not valid_username(username):
             # make a helpful error message
             username_error = "'{0}' is not a valid username.".format(username)
             errors = True
 
         password = self.request.get("password")
+        password_error = ''
         verify = self.request.get("verify")
+        verify_error = ''
         if not valid_password(password):
             # make a helpful error message
             password_error = "That's not a valid password."
@@ -44,13 +49,14 @@ class MainPage(webapp2.RequestHandler):
             errors = True
 
         email = self.request.get("email")
+        email_error = ''
         if len(email) > 0 and not valid_email(email):
             # make a helpful error message
             email_error = "That's not a valid email address."
             errors = True
 
         if errors:
-            page = template % {'username': username, "username_error': username_error, 'password_error': password_error, 'verify_error': verify_error, 'email': email, 'email_error': email_error}
+            page = template % {'username': username, 'username_error': username_error, 'password_error': password_error, 'verify_error': verify_error, 'email': email, 'email_error': email_error}
             self.response.write(page)
         else:
             self.response.write("Welcome {0}!".format(username))
