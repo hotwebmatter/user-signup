@@ -20,13 +20,16 @@ with open('user-signup.html', 'r') as template_file:
     template = template_file.read()
 
 class MainPage(webapp2.RequestHandler):
+    def render_page(self, username='', username_error='', password_error='', verify_error='', email='', email_error=''):
+        page = template % {'username': username, 'username_error': username_error, 'password_error': password_error, 'verify_error': verify_error, 'email': email, 'email_error': email_error}
+        self.response.out.write(page)
+
     def get(self):
-        page = template % {'username': '', 'username_error': '', 'password_error': '', 'verify_error': '', 'email': '', 'email_error': ''}
-        self.response.write(page)
+        self.render_page()
 
     def post(self):
         errors = False
-        
+
         username = self.request.get("username")
         username_error = ''
         if not valid_username(username):
@@ -56,8 +59,8 @@ class MainPage(webapp2.RequestHandler):
             errors = True
 
         if errors:
-            page = template % {'username': username, 'username_error': username_error, 'password_error': password_error, 'verify_error': verify_error, 'email': email, 'email_error': email_error}
-            self.response.write(page)
+            self.render_page(username, username_error, password_error, verify_error, email, email_error)
+            # self.response.write(page)
         else:
             self.response.write("Welcome {0}!".format(username))
 
