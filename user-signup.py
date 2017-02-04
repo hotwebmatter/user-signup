@@ -15,6 +15,10 @@ EMAIL_RE = re.compile(r"^[\S]+@[\S]+.[\S]+$")
 def valid_email(email):
     return EMAIL_RE.match(email)
 
+# HTML Escaping
+def html_escape(s):
+    return cgi.escape(s, quote=True)
+
 # HTML Template
 with open('user-signup.html', 'r') as template_file:
     template = template_file.read()
@@ -30,11 +34,11 @@ class MainPage(webapp2.RequestHandler):
     def post(self):
         errors = False
 
-        username = self.request.get("username")
+        username = html_escape(self.request.get("username"))
         username_error = ''
         if not valid_username(username):
             # make a helpful error message
-            username_error = cgi.escape("'{0}' is not a valid username.".format(username), quote = True)
+            username_error = "'{0}' is not a valid username.".format(username)
             errors = True
 
         password = self.request.get("password")
@@ -43,25 +47,26 @@ class MainPage(webapp2.RequestHandler):
         verify_error = ''
         if not valid_password(password):
             # make a helpful error message
-            password_error = cgi.escape("That's not a valid password.", quote = True)
+            password_error = html_escape("That's not a valid password.")
             errors = True
 
         if password != verify:
             # make a helpful error message
-            verify_error = cgi.escape("Your passwords didn't match.", quote = True)
+            verify_error = html_escape("Your passwords didn't match.")
             errors = True
 
-        email = self.request.get("email")
+        email = html_escape(self.request.get("email"))
         email_error = ''
         if len(email) > 0 and not valid_email(email):
             # make a helpful error message
-            email_error = cgi.escape("That's not a valid email address.", quote = True)
+            email_error = html_escape("That's not a valid email address.")
             errors = True
 
         if errors:
             self.render_page(username, username_error, password_error, verify_error, email, email_error)
             # self.response.write(page)
         else:
+            username = cgi.escape(username, quote = True)
             self.redirect("/welcome?username={}".format(username))
 
 class WelcomePage(webapp2.RequestHandler):
