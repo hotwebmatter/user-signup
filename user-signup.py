@@ -25,7 +25,12 @@ with open('user-signup.html', 'r') as template_file:
 
 class MainPage(webapp2.RequestHandler):
     def render_page(self, username='', username_error='', password_error='', verify_error='', email='', email_error=''):
-        page = template % {'username': username, 'username_error': username_error, 'password_error': password_error, 'verify_error': verify_error, 'email': email, 'email_error': email_error}
+        page = template % {'username': username,
+                           'username_error': username_error,
+                           'password_error': password_error,
+                           'verify_error': verify_error,
+                           'email': email,
+                           'email_error': email_error}
         self.response.out.write(page)
 
     def get(self):
@@ -47,19 +52,19 @@ class MainPage(webapp2.RequestHandler):
         verify_error = ''
         if not valid_password(password):
             # make a helpful error message
-            password_error = html_escape("That's not a valid password.")
+            password_error = "That's not a valid password."
             errors = True
 
         if password != verify:
             # make a helpful error message
-            verify_error = html_escape("Your passwords didn't match.")
+            verify_error = "Your passwords didn't match."
             errors = True
 
         email = html_escape(self.request.get("email"))
         email_error = ''
         if len(email) > 0 and not valid_email(email):
             # make a helpful error message
-            email_error = html_escape("That's not a valid email address.")
+            email_error = "That's not a valid email address."
             errors = True
 
         if errors:
